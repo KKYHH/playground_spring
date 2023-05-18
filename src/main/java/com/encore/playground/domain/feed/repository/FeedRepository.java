@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * 피드 글을 저장하는 리포지토리
  */
-public interface FeedRepository extends JpaRepository<Feed, Integer> {
+public interface FeedRepository extends JpaRepository<Feed, Long> {
 
-    List<Feed> findAllBy(Pageable pageable);
+//    List<Feed> findAllBy(Pageable pageable);
 }
