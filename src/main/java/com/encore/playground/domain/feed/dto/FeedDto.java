@@ -4,6 +4,7 @@ import com.encore.playground.domain.feed.entity.Feed;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data // 모든 필드의 getter, setter, toString, equals, hashCode 메소드를 자동으로 생성
 @NoArgsConstructor
@@ -17,6 +18,12 @@ public class FeedDto {
     private int commentCount;
     private int viewCount;
     private String article;
+
+    // Other class members
+
+    private Date creationDate;
+
+
 
     public Feed toEntity() { // FeedDto를 Feed 엔티티로 변환
         return Feed.builder()

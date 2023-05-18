@@ -4,6 +4,7 @@ import com.encore.playground.domain.feed.dto.FeedDto;
 import com.encore.playground.domain.feed.entity.Feed;
 import com.encore.playground.domain.feed.repository.FeedRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,12 @@ public class FeedService {
      */
     public List<FeedDto> feedPage() {
         List<Feed> feedList =  feedRepository.findAll(); // 추후 페이징 처리(검색 갯수 제한) 필요
+        List<FeedDto> feedDtoList = feedList.stream().map(FeedDto::new).toList();
+        return feedDtoList;
+    }
+
+    public List<FeedDto> feedByPage(Pageable pageable) {
+        List<Feed> feedList =  feedRepository.findAllBy(pageable); // 추후 페이징 처리(검색 갯수 제한) 필요
         List<FeedDto> feedDtoList = feedList.stream().map(FeedDto::new).toList();
         return feedDtoList;
     }
