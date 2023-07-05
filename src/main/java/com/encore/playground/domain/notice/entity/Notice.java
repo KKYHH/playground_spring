@@ -1,5 +1,6 @@
 package com.encore.playground.domain.notice.entity;
 
+import com.encore.playground.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,15 +21,18 @@ import java.time.LocalDateTime;
 public class Notice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long noticeId;
+    private Long id;
     @Column(nullable = false)
     private String title;
+    @ManyToOne
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
     @Column(nullable = false)
-    private String author;
+    private String content;
     @Column(nullable = false)
-    private String contents;
-    @Column(nullable = false)
-    private LocalDateTime uploadTime;
+    private LocalDateTime createdDate;
+    @Column
+    private LocalDateTime modifiedDate;
     @Column(nullable = false)
     @ColumnDefault("0")
     private int viewCount;

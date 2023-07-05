@@ -1,9 +1,8 @@
 package com.encore.playground.domain.notice.dto;
 
+import com.encore.playground.domain.member.entity.Member;
 import com.encore.playground.domain.notice.entity.Notice;
-import jakarta.persistence.Column;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
 
@@ -13,11 +12,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 
 public class NoticeDto {
-    private Long noticeId;
+    private Long id;
     private String title;
-    private String  author;
-    private String contents;
-    private LocalDateTime uploadTime;
+    private Member member;
+    private String content;
+    private LocalDateTime createdDate;
+    private LocalDateTime modifiedDate;
     private int viewCount;
 
     /**
@@ -25,11 +25,11 @@ public class NoticeDto {
      * @param notice
      */
     public NoticeDto (Notice notice) {
-        this.noticeId = notice.getNoticeId();
+        this.id = notice.getId();
         this.title = notice.getTitle();
-        this.author =  notice.getAuthor();
-        this.contents = notice.getContents();
-        this.uploadTime = notice.getUploadTime();
+        this.member =  notice.getMember();
+        this.content = notice.getContent();
+        this.createdDate = notice.getCreatedDate();
         this.viewCount = notice.getViewCount();
     }
 
@@ -39,11 +39,11 @@ public class NoticeDto {
      */
     public Notice toEntity() {
         return Notice.builder()
-                .noticeId(noticeId)
+                .id(id)
                 .title(title)
-                .author(author)
-                .contents(contents)
-                .uploadTime(uploadTime)
+                .member(member)
+                .content(content)
+                .createdDate(createdDate)
                 .viewCount(viewCount)
                 .build();
     }
