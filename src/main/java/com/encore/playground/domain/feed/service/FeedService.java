@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -55,7 +56,7 @@ public class FeedService {
      */
     public List<FeedListDto> feedPage(MemberGetMemberIdDto memberIdDto) {
         MemberDto memberDto = memberService.getMemberByUserid(memberIdDto.getUserid());
-        List<MemberDto> followerListDto = followService.getFollowingList(memberDto);
+        ArrayList<MemberDto> followerListDto = new ArrayList<>(followService.getFollowingList(memberDto));
         followerListDto.add(memberDto); // 자신의 피드도 보여주기 위해 현재 사용자의 MemberDto를 추가
         List<Feed> feedList = feedRepository.findByMemberInOrderByIdDesc(
                 followerListDto.stream().map(MemberDto::toEntity).toList())
