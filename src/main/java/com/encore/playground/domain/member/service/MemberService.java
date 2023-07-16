@@ -67,8 +67,6 @@ public class MemberService {
         Optional<Member> memberForUserid = this.memberRepository.findByUserid(userid);
         Optional<Member> memberForEmail = this.memberRepository.findByEmail(email);
 
-        // TODO : 아이디와 이메일의 중복 체크를 어떻게 해줘야할지 생각해보기
-
         // 아이디와 이메일이 둘 중 하나라도 중복이 되었다면 중복된 것으로 본다.
         if (memberForUserid.isPresent() || memberForEmail.isPresent()) {
             return Boolean.TRUE;
@@ -168,14 +166,19 @@ public class MemberService {
 
     /**
      * 비밀번호 변경 기능 - 이미 로그인한 사용자가 비밀번호를 변경하는 기능
-     * @param userid   로그인한 유저의 id
-     * @param password 변경할 비밀번호
+     * @param userid 로그인한 유저의 id
+     * @param memberPasswordDto 기존 비밀번호와 변경할 비밀번호가 함께 들어있는 DTO
      */
-    public void changePassword(String userid, String password) {
+    public void changePassword(String userid, MemberPasswordDto memberPasswordDto) {
         // userid로 멤버 찾기
         MemberDto memberDto = this.getMemberByUserid(userid);
+        // 기존 비밀번호가 일치하는지 확인
+        String password = memberPasswordDto.getPassword();
+        if (!passwordEncoder.matches(password, memberDto.getPassword())) {
+            throw new IllegalArgumentException("기존 비밀번호가 일치하지 않습니다.");
+        }
         // 비밀번호 변경
-        memberDto.setPassword(passwordEncoder.encode(password));
+        memberDto.setPassword(passwordEncoder.encode(memberPasswordDto.getNewPassword()));
         // member DB에 저장
         memberRepository.save(memberDto.toEntity());
     }
